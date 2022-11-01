@@ -8,6 +8,7 @@
 #include <thread>  
 #include <string>  
 #include<iomanip>
+#pragma comment(lib, "Winmm.lib")
 
 const int DURATION_DEBUG = -65536;
 static bool done = false;
@@ -30,6 +31,19 @@ void worker() {
         i++;
         i--;
     }
+}
+
+void set_process_qos(bool high) {
+    PROCESS_POWER_THROTTLING_STATE PowerThrottling;
+    RtlZeroMemory(&PowerThrottling, sizeof(PowerThrottling));
+    PowerThrottling.Version = PROCESS_POWER_THROTTLING_CURRENT_VERSION;
+    PowerThrottling.ControlMask = PROCESS_POWER_THROTTLING_EXECUTION_SPEED;
+    PowerThrottling.StateMask = high ? 0 : PROCESS_POWER_THROTTLING_EXECUTION_SPEED;
+
+    SetProcessInformation(GetCurrentProcess(),
+        ProcessPowerThrottling,
+        &PowerThrottling,
+        sizeof(PowerThrottling));
 }
 
 int main(int argc, char* argv[])
@@ -58,12 +72,21 @@ int main(int argc, char* argv[])
 
     LONGLONG time_elapsed_ms = -1;
     int target_ms = target_s * 1000;
+    //mciSendString(L"open \"Ð¡±ø²Ù.mp3\" type mpegvideo alias mp3", NULL, 0, NULL);
+    //mciSendString(L"play mp3", NULL, 0, NULL);
+
+    set_process_qos(true);
     while (true) {
         time_elapsed_ms = get_time_ms() - start_time_ms;
         if (time_elapsed_ms >= target_ms) {
             done = true;
             std::cout << "Actually we hold 100% CPU for " << std::setiosflags(std::cout.fixed) << std::setprecision(3) << (time_elapsed_ms / 1000.0f) << " s." << std::endl;
             break;
+        }
+        DWORD pid = 0;
+        GetWindowThreadProcessId(GetConsoleWindow(), &pid);
+        if (pid != GetCurrentProcessId()) {
+            std::cout << "GetConsoleWindow: " << pid << "GetCurrentProcessId: " << GetCurrentProcessId() << std::endl;
         }
     }
     return 0;
