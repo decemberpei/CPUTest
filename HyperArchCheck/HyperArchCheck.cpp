@@ -30,8 +30,8 @@ int main(void)
 	while (true){
 		PROCESSOR_RELATIONSHIP pr = tmpProcessorInfo->Processor;
 		cout << "core index: " << std::setw(2) <<processInfoCount;
-		cout << ", hyper thread support: " << (pr.Flags == LTP_PC_SMT) ? "Yes" : "No";
-		cout << ", heterogeneous platform: " << (pr.EfficiencyClass != 0) ? "Yes" : "No";
+		cout << ", hyper thread support: " << (int)pr.Flags;
+		cout << ", efficiency class: " << (int)pr.EfficiencyClass; // higher value = more performant
 		cout << endl;
 		processInfoCount++;
 		offset = offset + tmpProcessorInfo->Size;

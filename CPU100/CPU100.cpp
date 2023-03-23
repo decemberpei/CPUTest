@@ -59,6 +59,10 @@ int main(int argc, char* argv[])
     std::cout << "Hoding 100% CPU usage for " << target_s << " seconds.\n";
 
     int cpu_acount = get_cpu_core_count();
+    if (argc == 3) {
+        std::cout << "manual cpu count: " << std::stoi(argv[2]) << "\n";
+        cpu_acount = std::stoi(argv[2]);
+    }
     std::thread t[129];
     if (cpu_acount >= 129 || cpu_acount < 1) {
         std::cout << "We don't support this platform. " << std::endl;
@@ -86,7 +90,7 @@ int main(int argc, char* argv[])
         DWORD pid = 0;
         GetWindowThreadProcessId(GetConsoleWindow(), &pid);
         if (pid != GetCurrentProcessId()) {
-            std::cout << "GetConsoleWindow: " << pid << "GetCurrentProcessId: " << GetCurrentProcessId() << std::endl;
+            std::cout << "GetConsoleWindow: " << pid << " GetCurrentProcessId: " << GetCurrentProcessId() << std::endl;
         }
     }
     return 0;
