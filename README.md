@@ -1,6 +1,6 @@
 # CPUTest - a set of tools to test CPU
 
-- **CPU100DotNet **
+- **CPU100DotNet**
   - DotNet version of CPU100 to observe hyper arch scheduling with Apps that have GUI on Windows 11
   
 - **CPU100 [seconds]**
