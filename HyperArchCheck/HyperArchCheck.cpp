@@ -31,7 +31,7 @@ int main(void)
 		PROCESSOR_RELATIONSHIP pr = tmpProcessorInfo->Processor;
 		cout << "core index: " << std::setw(2) <<processInfoCount;
 		cout << ", hyper thread support: " << (int)pr.Flags;
-		cout << ", efficiency class: " << (int)pr.EfficiencyClass; // higher value = more performant
+		cout << ", efficiency class (higher value = more performant): " << (int)pr.EfficiencyClass; // higher value = more performant
 		cout << endl;
 		processInfoCount++;
 		offset = offset + tmpProcessorInfo->Size;
